@@ -38,11 +38,15 @@ public class MainActivity extends AppCompatActivity {
      * Creates a grid and fills it with apps.
      */
     private void createGrid() {
-        apps = new MenuGrid(setting.getNoOfCols());
-
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
-        int width = metrics.widthPixels;
-        int size = width / setting.getNoOfCols();
+        int screenWidth = metrics.widthPixels;
+        int sizeOfCol = screenWidth / setting.getNoOfCols();
+
+        apps = new MenuGrid(setting.getNoOfCols());
+        //TODO Temporary adds 3 apps as testing. Remove after app creation is functional.
+        apps.addApp(new MenuApp(0,0,1));
+        apps.addApp(new MenuApp(5,3,2));
+        apps.addApp(new MenuApp(1,2,2));
 
         for (int i = 0 ; i < apps.getNoOfApps() ; i++){
             MenuApp app = apps.getApp(i);
@@ -54,16 +58,17 @@ public class MainActivity extends AppCompatActivity {
             appImageView.setAdjustViewBounds(true);
             appImageView.setPadding(8, 8, 8, 8);
 
-            Log.v("Size of app", String.valueOf(size));
-            appImageView.setMaxWidth(size);
-            appImageView.setMaxHeight(size);
-            appImageView.setX(app.getColumn()*size);
-            appImageView.setY(app.getRow()*size);
+            Log.v("Size of app", String.valueOf(sizeOfCol));
+            appImageView.setMaxWidth(sizeOfCol * app.getSize());
+            appImageView.setMaxHeight(sizeOfCol * app.getSize());
+            appImageView.setX(app.getColumn() * sizeOfCol);
+            appImageView.setY(app.getRow() * sizeOfCol);
 
             mainLayout.addView(appImageView);
         }
 
-        mainLayout.getLayoutParams().height = size * (apps.getHighestRow()+1);
+        //extends main layout too the height of the bottommost app so everything shows.
+        mainLayout.getLayoutParams().height = sizeOfCol * apps.getHighestRow();
     }
 
 }
