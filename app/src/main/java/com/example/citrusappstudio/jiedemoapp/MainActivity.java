@@ -60,6 +60,12 @@ public class MainActivity extends AppCompatActivity {
                     .setAction("Action", null).show();
             return true;
         }
+        else if (id == R.id.action_add_app){
+            //TODO Settings Activity
+            Snackbar.make(mainLayout, "Add an app here", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
