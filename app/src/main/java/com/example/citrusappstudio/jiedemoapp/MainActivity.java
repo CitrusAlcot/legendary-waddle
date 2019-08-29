@@ -41,6 +41,11 @@ public class MainActivity extends AppCompatActivity {
         sharedPref = android.support.v7.preference.PreferenceManager
                 .getDefaultSharedPreferences(this);
 
+        apps = new MenuGrid(sharedPref.getInt(SettingsActivity.KEY_PREF_NUM_COLUMNS, 4));
+        //TODO: Temporary adds 3 apps as testing. Remove after app movement and resize is functional.
+        apps.addApp(new MenuApp(0,0,1));
+        apps.addApp(new MenuApp(5,3,2));
+        apps.addApp(new MenuApp(1,2,2));
         createGrid();
 
     }
@@ -71,9 +76,8 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_add_app){
-            //TODO Add App Activity
-            Snackbar.make(mainLayout, "Switch to add app activity here", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Log.v("ADDAPP", String.valueOf(apps.addApp()));
+            createGrid();
             return true;
         }
 
@@ -93,23 +97,19 @@ public class MainActivity extends AppCompatActivity {
         int screenWidth = metrics.widthPixels;
         int sizeOfCol = screenWidth / noOfCols;
 
-        apps = new MenuGrid(noOfCols);
-        //TODO Temporary adds 3 apps as testing. Remove after app creation is functional.
-        apps.addApp(new MenuApp(0,0,1));
-        apps.addApp(new MenuApp(5,3,2));
-        apps.addApp(new MenuApp(1,2,2));
+        apps.setNoOfColumns(noOfCols);
 
         for (int i = 0 ; i < apps.getNoOfApps() ; i++){
             MenuApp app = apps.getApp(i);
 
             ImageView appImageView = new ImageView(this);
 
+            //TODO: images on each app.
             appImageView.setImageDrawable(getResources().getDrawable(R.drawable.placeholder_400x400));
             appImageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             appImageView.setAdjustViewBounds(true);
             appImageView.setPadding(8, 8, 8, 8);
 
-            Log.v("Size of app", String.valueOf(sizeOfCol));
             appImageView.setMaxWidth(sizeOfCol * app.getSize());
             appImageView.setMaxHeight(sizeOfCol * app.getSize());
             appImageView.setX(app.getColumn() * sizeOfCol);
