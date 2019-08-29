@@ -1,5 +1,7 @@
 package com.example.citrusappstudio.jiedemoapp;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +21,8 @@ import android.widget.RelativeLayout;
  */
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout mainLayout;
-    private Setting setting;
     private MenuGrid apps;
+    private SharedPreferences sharedPref;
 
     /**
      * {@inheritDoc}
@@ -31,12 +33,21 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // Create toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mainLayout = findViewById(R.id.main_layout);
-        setting = new Setting(4);
 
+        sharedPref = android.support.v7.preference.PreferenceManager
+                .getDefaultSharedPreferences(this);
+
+        createGrid();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         createGrid();
     }
 
@@ -55,14 +66,13 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
-            //TODO Settings Activity
-            Snackbar.make(mainLayout, "Switch to settings activity here", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
+            Intent intentSettingsActivity = new Intent( MainActivity.this, SettingsActivity.class);
+            startActivity(intentSettingsActivity);
             return true;
         }
         else if (id == R.id.action_add_app){
-            //TODO Settings Activity
-            Snackbar.make(mainLayout, "Add an app here", Snackbar.LENGTH_LONG)
+            //TODO Add App Activity
+            Snackbar.make(mainLayout, "Switch to add app activity here", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show();
             return true;
         }
@@ -76,11 +86,14 @@ public class MainActivity extends AppCompatActivity {
      * Creates a grid and fills it with apps.
      */
     private void createGrid() {
+        int noOfCols = sharedPref.getInt(SettingsActivity.KEY_PREF_NUM_COLUMNS, 4);
+        mainLayout.removeAllViews();
+
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
         int screenWidth = metrics.widthPixels;
-        int sizeOfCol = screenWidth / setting.getNoOfCols();
+        int sizeOfCol = screenWidth / noOfCols;
 
-        apps = new MenuGrid(setting.getNoOfCols());
+        apps = new MenuGrid(noOfCols);
         //TODO Temporary adds 3 apps as testing. Remove after app creation is functional.
         apps.addApp(new MenuApp(0,0,1));
         apps.addApp(new MenuApp(5,3,2));
