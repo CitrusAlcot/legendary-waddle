@@ -2,7 +2,7 @@ package com.example.citrusappstudio.jiedemoapp;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +10,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -23,6 +24,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout mainLayout;
     private MenuGrid apps;
     private SharedPreferences sharedPref;
+    private ImageView lastV;
 
     /**
      * {@inheritDoc}
@@ -48,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         apps.addApp(new MenuApp(1,2,2));
         createGrid();
 
+        lastV = null;
     }
 
     @Override
@@ -102,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         for (int i = 0 ; i < apps.getNoOfApps() ; i++){
             MenuApp app = apps.getApp(i);
 
-            ImageView appImageView = new ImageView(this);
+            final ImageView appImageView = new ImageView(this);
 
             //TODO: images on each app.
             appImageView.setImageDrawable(getResources().getDrawable(R.drawable.placeholder_400x400));
@@ -114,6 +117,15 @@ public class MainActivity extends AppCompatActivity {
             appImageView.setMaxHeight(sizeOfCol * app.getSize());
             appImageView.setX(app.getColumn() * sizeOfCol);
             appImageView.setY(app.getRow() * sizeOfCol);
+
+            appImageView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    v.setBackgroundColor(Color.RED);
+                    if (lastV != null)
+                        lastV.setBackgroundColor(Color.TRANSPARENT);
+                    lastV = (ImageView) v;
+                }
+            });
 
             mainLayout.addView(appImageView);
         }
