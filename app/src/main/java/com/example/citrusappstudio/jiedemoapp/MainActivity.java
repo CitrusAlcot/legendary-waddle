@@ -1,17 +1,18 @@
 package com.example.citrusappstudio.jiedemoapp;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
+import com.example.citrusappstudio.jiedemoapp.weather.WeatherActivity;
 
 /**
  * The main activity of JieDemoApp.
@@ -22,7 +23,8 @@ import android.widget.RelativeLayout;
 public class MainActivity extends AppCompatActivity {
     private RelativeLayout mainLayout;
     private MenuGrid apps;
-    private SharedPreferences sharedPref;
+
+    private static final String TAG = "MainActivity";
 
     /**
      * {@inheritDoc}
@@ -38,14 +40,11 @@ public class MainActivity extends AppCompatActivity {
 
         mainLayout = findViewById(R.id.main_layout);
 
-        sharedPref = android.support.v7.preference.PreferenceManager
-                .getDefaultSharedPreferences(this);
-
-        apps = new MenuGrid(sharedPref.getInt(SettingsActivity.KEY_PREF_NUM_COLUMNS, 4));
+        apps = new MenuGrid(AppPreferences.getNumColumns(this));
         //TODO: Temporary adds 3 apps as testing. Remove after app movement and resize is functional.
-        apps.addApp(new MenuApp(0,0,1));
-        apps.addApp(new MenuApp(5,3,2));
-        apps.addApp(new MenuApp(1,2,2));
+        apps.addApp(new MenuApp(0,0,1, WeatherActivity.class));
+        apps.addApp(new MenuApp(5,3,2, WeatherActivity.class));
+        apps.addApp(new MenuApp(1,2,2, WeatherActivity.class));
         createGrid();
 
     }
@@ -76,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }
         else if (id == R.id.action_add_app){
-            Log.v("ADDAPP", String.valueOf(apps.addApp()));
+            Log.v(TAG, String.valueOf("Add app " + apps.addApp()));
             createGrid();
             return true;
         }
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
      * Creates a grid and fills it with apps.
      */
     private void createGrid() {
-        int noOfCols = sharedPref.getInt(SettingsActivity.KEY_PREF_NUM_COLUMNS, 4);
+        int noOfCols = AppPreferences.getNumColumns(this);
         mainLayout.removeAllViews();
 
         DisplayMetrics metrics = this.getResources().getDisplayMetrics();
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         apps.setNoOfColumns(noOfCols);
 
         for (int i = 0 ; i < apps.getNoOfApps() ; i++){
-            MenuApp app = apps.getApp(i);
+            final MenuApp app = apps.getApp(i);
 
             ImageView appImageView = new ImageView(this);
 
@@ -114,6 +113,14 @@ public class MainActivity extends AppCompatActivity {
             appImageView.setMaxHeight(sizeOfCol * app.getSize());
             appImageView.setX(app.getColumn() * sizeOfCol);
             appImageView.setY(app.getRow() * sizeOfCol);
+
+            appImageView.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Log.v(TAG, "intent started, moving to " + app.getActivity());
+                    Intent intentAppActivity = new Intent( MainActivity.this, app.getActivity());
+                    startActivity(intentAppActivity);
+                }
+            });
 
             mainLayout.addView(appImageView);
         }
