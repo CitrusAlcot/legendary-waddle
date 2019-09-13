@@ -3,11 +3,20 @@
     xmlns:asp="http://schemas.android.com/apk/res-auto">
 
     <SeekBarPreference
-        android:key="no_Of_Columns"
+        android:key="no_of_columns"
         android:title="Number Of Columns"
         android:summary="The number of columns on the grid."
         android:icon="@drawable/ic_view_column_black_24dp"
         android:defaultValue="4"
         android:max="10"
         asp:min="1"/>
+
+    <PreferenceCategory android:title="Weather App">
+        <EditTextPreference
+            android:key="weather_location"
+            android:title="Weather Location"
+            android:icon="@drawable/ic_edit_location_black_24dp"
+            />
+    </PreferenceCategory>
+
 </PreferenceScreen>
