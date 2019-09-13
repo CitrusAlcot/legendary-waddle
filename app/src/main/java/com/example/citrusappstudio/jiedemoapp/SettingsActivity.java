@@ -7,6 +7,8 @@ import android.support.v7.widget.Toolbar;
 
 public class SettingsActivity extends PreferenceActivity {
 
+    public static final String KEY_PREF_NUM_COLUMNS = "no_Of_Columns";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

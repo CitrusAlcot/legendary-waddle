@@ -2,8 +2,6 @@ package com.example.citrusappstudio.jiedemoapp;
 
 import android.util.Log;
 
-import com.example.citrusappstudio.jiedemoapp.weather.WeatherActivity;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -82,9 +80,9 @@ public class MenuGrid implements Serializable {
             for (int column = 0; column < noOfColumns; column++)
                 if (!spaceAlreadyTaken(row, column, 1)){
                     Log.v("FOUNDSPACEAT", "r:" + String.valueOf(row) + "c:" + String.valueOf(column));
-                    return new MenuApp(row, column, 1, WeatherActivity.class);
+                    return new MenuApp(row, column, 1);
         }
-        return new MenuApp(0, 0, 1, WeatherActivity.class);
+        return new MenuApp(0, 0, 1);
     }
 
     /**

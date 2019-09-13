@@ -1,7 +1,5 @@
 package com.example.citrusappstudio.jiedemoapp;
 
-import com.example.citrusappstudio.jiedemoapp.weather.WeatherActivity;
-
 import java.io.Serializable;
 
 /**
@@ -15,7 +13,6 @@ public class MenuApp implements Serializable{
     private int row;
     private int column;
     private int size;
-    private Class activity;
 
     /**
      * Creates an new app with given location of the grid and size of app.
@@ -23,11 +20,10 @@ public class MenuApp implements Serializable{
      * @param column The column on the grid the app will be located in.
      * @param size The size the app icon takes on the grid.
      */
-    public MenuApp(int row, int column, int size, Class activity){
+    public MenuApp(int row, int column, int size){
         this.row = row;
         this.column = column;
         this.size = size;
-        this.activity = activity;
     }
 
     public int getRow() {
@@ -52,9 +48,5 @@ public class MenuApp implements Serializable{
 
     public void setSize(int size) {
         this.size = size;
-    }
-
-    public Class getActivity() {
-        return activity;
     }
 }
