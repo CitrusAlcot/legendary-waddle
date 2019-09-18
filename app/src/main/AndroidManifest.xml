@@ -33,7 +33,11 @@
         <activity android:name=".weather.WeatherActivity"
             android:label="Weather"
             android:parentActivityName=".MainActivity">
+        </activity>
 
+        <activity android:name=".notepad.NotepadActivity"
+            android:label="Notepad"
+            android:parentActivityName=".MainActivity">
         </activity>
     </application>
 

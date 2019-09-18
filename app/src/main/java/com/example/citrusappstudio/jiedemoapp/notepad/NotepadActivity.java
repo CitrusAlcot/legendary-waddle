@@ -1,4 +1,4 @@
-package com.example.citrusappstudio.jiedemoapp;
+package com.example.citrusappstudio.jiedemoapp.notepad;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -7,7 +7,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
-public class NotePadActivity extends AppCompatActivity {
+import com.example.citrusappstudio.jiedemoapp.R;
+
+public class NotepadActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
